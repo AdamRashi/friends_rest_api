@@ -248,11 +248,14 @@ class FriendRequestDetailView(APIView):
                 {"Error": "Friend request not found."}, status=status.HTTP_404_NOT_FOUND
             )
 
-    def patch(self, request, sender_id):
+
+class FriendRequestAccceptRejectView(APIView):
+    def patch(self, request):
         serializer = FriendRequestUpdateSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
         action = serializer.validated_data["action"]
+        sender_id = serializer.validated_data["sender_id"]
 
         sender = get_object_or_404(User, id=sender_id)
         user = request.user
@@ -294,6 +297,7 @@ class FriendRequestDetailView(APIView):
                 sender=user, receiver=sender, status=FriendRequest.ACCEPTED
             )
             new_friend_request.save()
+
         elif new_status == FriendRequest.REJECTED:
             if friend_request.status == FriendRequest.ACCEPTED:
                 sender.friends.remove(user)

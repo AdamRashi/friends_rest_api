@@ -11,3 +11,5 @@ class FriendRequestSerializer(serializers.ModelSerializer):
 
 class FriendRequestUpdateSerializer(serializers.Serializer):
     action = serializers.ChoiceField(choices=["accept", "reject"])
+    sender_id = serializers.IntegerField()
+

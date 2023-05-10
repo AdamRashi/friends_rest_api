@@ -9,7 +9,7 @@ from .views import (
     delete_friend,
     get_friendship_status,
     FriendRequestDetailView,
-    UserViewSet
+    UserViewSet, FriendRequestAccceptRejectView
 )
 
 
@@ -19,15 +19,15 @@ router.register(r"users", UserViewSet, basename="user")
 
 urlpatterns = [
     path("friends-list/", FriendList.as_view(), name="friends-list"),
-    # path('requests/', FriendRequestUpdateRetrieveView.as_view(), name="see_answer_request"),
     path(
         "requests/<int:sender_id>/",
         FriendRequestDetailView.as_view(),
         name="incoming-friend-request",
     ),
+    path('requests/answer/', FriendRequestAccceptRejectView.as_view(), name='answer_request'),
+
     path("delete-friend/<int:friend_id>/", delete_friend, name="delete_friend"),
-    path(
-        "friends/status/<int:user_id>/", get_friendship_status, name="friendship_status"
+    path("friends/status/<int:user_id>/", get_friendship_status, name="friendship_status"
     ),
     path("", include(router.urls)),
     path(
